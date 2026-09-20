@@ -1,0 +1,25 @@
+{
+  "name": "@wwewtech/dali-short-address-commissioner",
+  "version": "1.0.0",
+  "description": "Commission DALI/DALI-2 lighting buses with an agent",
+  "keywords": [
+    "agent-skills",
+    "skills-sh",
+    "claude-code",
+    "antigravity",
+    "cursor",
+    "windsurf",
+    "dali",
+    "dali-2",
+    "lighting",
+    "building-automation",
+    "iec-62386",
+    "commissioning"
+  ],
+  "author": "Pavel Lebedev <pasha20051344@gmail.com> (https://wwew.tech)",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/wwewtech/dali-short-address-commissioner.git"
+  }
+}

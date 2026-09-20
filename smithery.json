@@ -1,0 +1,15 @@
+{
+  "name": "dali-short-address-commissioner",
+  "description": "Commission DALI/DALI-2 lighting buses with an agent: short-address assignment (0-63), clash resolution, 16 groups, 16 scenes, DT8 devices, and emergency ballast tests per IEC 62386.",
+  "tags": [
+    "dali",
+    "lighting",
+    "building-automation",
+    "iot",
+    "agent-skills",
+    "claude-code",
+    "cursor",
+    "antigravity"
+  ],
+  "author": "Pavel Lebedev"
+}

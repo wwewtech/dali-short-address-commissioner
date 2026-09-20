@@ -1,0 +1,7 @@
+{
+  "group": "DALI Lighting Commissioning",
+  "description": "Commission DALI/DALI-2 lighting buses: short-address assignment, clash resolution, groups, scenes, and emergency ballast tests per IEC 62386.",
+  "skills": [
+    "dali-short-address-commissioner"
+  ]
+}

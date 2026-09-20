@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DALI Short-Address Commissioner Skill</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-dark: #000000;
+            --bg-panel: #09090b;
+            --border-color: #27272a;
+            --text-main: #f4f4f5;
+            --text-muted: #a1a1aa;
+            --accent: #e4e4e7;
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        code, pre {
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        header {
+            position: sticky;
+            top: 0;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(8px);
+            border-bottom: 1px solid var(--border-color);
+            padding: 1rem 2rem;
+            z-index: 100;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 4rem 2rem;
+        }
+
+        .hero {
+            margin-bottom: 4rem;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            letter-spacing: -0.02em;
+        }
+
+        .subtitle {
+            color: var(--text-muted);
+            font-size: 1.125rem;
+            margin-bottom: 2rem;
+            max-width: 600px;
+        }
+
+        .install-box {
+            background: var(--bg-panel);
+            border: 1px solid var(--border-color);
+            padding: 1rem;
+            border-radius: 4px;
+            display: inline-flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .install-box code {
+            color: var(--text-main);
+        }
+
+        .section {
+            margin-bottom: 4rem;
+            padding-top: 2rem;
+            border-top: 1px solid var(--border-color);
+        }
+
+        h2 {
+            font-size: 1.5rem;
+            font-weight: 500;
+            margin-bottom: 1.5rem;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .card {
+            background: var(--bg-panel);
+            border: 1px solid var(--border-color);
+            padding: 1.5rem;
+            border-radius: 4px;
+        }
+
+        .card h3 {
+            font-size: 1.125rem;
+            font-weight: 500;
+            margin-bottom: 1rem;
+        }
+
+        .workflow {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+            margin-top: 1rem;
+        }
+
+        .step {
+            background: var(--bg-dark);
+            border: 1px solid var(--border-color);
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            font-size: 0.875rem;
+        }
+
+        .arrow {
+            color: var(--text-muted);
+        }
+        
+        .visualization {
+            background: var(--bg-dark);
+            border: 1px solid var(--border-color);
+            padding: 2rem;
+            margin-top: 2rem;
+            text-align: center;
+            font-family: 'JetBrains Mono', monospace;
+            color: var(--text-muted);
+        }
+
+        ul {
+            list-style-type: none;
+        }
+        
+        ul li {
+            position: relative;
+            padding-left: 1.5rem;
+            margin-bottom: 0.5rem;
+            color: var(--text-muted);
+        }
+        
+        ul li::before {
+            content: "—";
+            position: absolute;
+            left: 0;
+            color: var(--border-color);
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div>wwewtech / dali-short-address-commissioner</div>
+    </header>
+
+    <div class="container">
+        <div class="hero">
+            <h1>DALI Short-Address Commissioner</h1>
+            <p class="subtitle">Agent skill for systematic DALI/DALI-2 lighting bus commissioning per IEC 62386.</p>
+            <div class="install-box">
+                <code>npx skills add wwewtech/dali-short-address-commissioner</code>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>Commissioning Workflow</h2>
+            <div class="card">
+                <p>Methodical approach to prevent duplicate or missing addresses:</p>
+                <div class="workflow">
+                    <div class="step">Discover</div>
+                    <div class="arrow">→</div>
+                    <div class="step">Address</div>
+                    <div class="arrow">→</div>
+                    <div class="step">Group</div>
+                    <div class="arrow">→</div>
+                    <div class="step">Scene</div>
+                    <div class="arrow">→</div>
+                    <div class="step">Verify</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>Core Constraints</h2>
+            <div class="grid">
+                <div class="card">
+                    <h3>The 64 Limit</h3>
+                    <p>Maximum 64 short addresses (0-63) per bus. Beyond this, the bus must be split.</p>
+                    <div class="visualization">
+                        [00] [01] [02] ... [61] [62] [63]
+                    </div>
+                </div>
+                <div class="card">
+                    <h3>Groups & Scenes</h3>
+                    <ul>
+                        <li>Max 16 Groups</li>
+                        <li>Max 16 Scenes</li>
+                        <li>15-min commissioning timer</li>
+                        <li>DT8 color support</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>Replacement Flow</h2>
+            <div class="card">
+                <h3>Failed Ballast Recovery</h3>
+                <ul>
+                    <li>Install new gear (shows as unassigned)</li>
+                    <li>Discover only new gear (do not randomize bus)</li>
+                    <li>Assign explicit OLD short address</li>
+                    <li>Re-apply group/scene from saved config</li>
+                    <li>Verify functionality</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

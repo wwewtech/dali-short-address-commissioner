@@ -1,0 +1,11 @@
+---
+description: Commission DALI/DALI-2 lighting buses with an agent
+globs: **/*.{py,js,ts,yaml,yml,json,cfg,ini}
+alwaysApply: false
+---
+- DALI limits: max 64 short addresses (0-63), max 16 groups, max 16 scenes.
+- 15-minute commissioning timer applies for addressing commands (259-270).
+- Method: Discover -> Assign short addresses -> Resolve clashes -> Assign Groups -> Assign Scenes -> Verify.
+- Clashes: Never leave duplicates, move to free address.
+- Replacement: Install new gear -> Assign old short address explicitly -> Re-apply config -> Verify.
+- Safety: Warn before broadcast commands, never commission on known wiring faults.

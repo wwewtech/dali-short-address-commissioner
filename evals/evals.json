@@ -1,0 +1,27 @@
+{
+  "evals": [
+    {
+      "prompt": "Commission a new DALI bus from scratch with 24 luminaires connected to a KNX/DALI gateway.",
+      "files": [],
+      "id": 1,
+      "expected_output": "Agent runs pre-flight checks (bus power, no shorts, <64 devices), sends Initialize (cmd 258 twice within 100ms) then Randomize (259 twice), assigns short addresses 0-23 one by one verifying each with Identify, plans group assignments by room/function, programs at least one fallback scene at 100%, and reminds about the 15-minute commissioning timer.",
+      "name": "commission_new_bus"
+    },
+    {
+      "prompt": "After adding 4 new Tridonic LED drivers to an existing DALI bus, two luminaires now flicker and respond to the wrong commands. Diagnose and fix.",
+      "files": [],
+      "id": 2,
+      "expected_output": "Agent suspects address clashes from factory-fresh gear, runs discovery to identify duplicate short addresses, moves conflicting gear to free addresses (never leaves duplicates), re-runs discovery to confirm zero clashes, and verifies each luminaire responds correctly to its assigned address.",
+      "name": "resolve_address_clash"
+    },
+    {
+      "prompt": "One ballast on short address 14 has died. I've installed a replacement. How do I get it working without disrupting the other 31 luminaires on the bus?",
+      "files": [],
+      "id": 3,
+      "expected_output": "Agent follows the replacement flow: discover the new unassigned gear (address 255), assign it explicitly to short address 14 (do NOT randomize the whole bus), re-apply group and scene membership from the saved config, and verify the replacement responds correctly.",
+      "name": "replace_failed_ballast"
+    }
+  ],
+  "skill_name": "dali-short-address-commissioner",
+  "version": "1.0.0"
+}

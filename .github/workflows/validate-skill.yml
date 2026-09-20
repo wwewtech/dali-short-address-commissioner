@@ -1,0 +1,31 @@
+name: Validate Skill
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Check SKILL.md exists
+        run: |
+          if [ ! -f "SKILL.md" ]; then
+            echo "Error: SKILL.md not found at root"
+            exit 1
+          fi
+          
+      - name: Validate Frontmatter
+        run: |
+          if ! grep -q "^name:" SKILL.md; then
+            echo "Error: Missing 'name' in SKILL.md frontmatter"
+            exit 1
+          fi
+          if ! grep -q "^description:" SKILL.md; then
+            echo "Error: Missing 'description' in SKILL.md frontmatter"
+            exit 1
+          fi
