@@ -1,0 +1,27 @@
+name: Bug Report
+description: Report an issue, command violation, or device communication failure in dali-short-address-commissioner
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: Thanks for helping improve dali-short-address-commissioner!
+  - type: input
+    id: gateway
+    attributes:
+      label: Gateway / Hardware Interface
+      description: What DALI gateway or USB controller were you using? (e.g. Tridonic DALI USB, Helvar 910, KNX Gateway)
+      placeholder: e.g. Lunatone USB DALI-2
+    validations:
+      required: true
+  - type: textarea
+    id: description
+    attributes:
+      label: Issue Description
+      description: Describe what command sequence failed or what ballast state occurred.
+    validations:
+      required: true
+  - type: textarea
+    id: dtr_frames
+    attributes:
+      label: Raw DALI Frames
+      description: Paste any captured 16-bit or 24-bit forward/backward frames.

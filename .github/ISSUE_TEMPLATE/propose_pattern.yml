@@ -1,0 +1,18 @@
+name: Propose DALI Device Profile / Preset
+description: Suggest a new control gear profile (DT8, DT6, DT1) or gateway workflow
+labels: ["enhancement", "device-profile"]
+body:
+  - type: input
+    id: gear_family
+    attributes:
+      label: Gear / Driver Family
+      placeholder: e.g. Philips Xitanium DT8 RGBW
+    validations:
+      required: true
+  - type: textarea
+    id: commands
+    attributes:
+      label: Recommended Command Sequence
+      description: Provide the exact opcode sequence and timing requirements.
+    validations:
+      required: true

@@ -1,7 +1,8 @@
 {
   "name": "@wwewtech/dali-short-address-commissioner",
   "version": "1.0.0",
-  "description": "Commission DALI/DALI-2 lighting buses with an agent",
+  "description": "Autonomous DALI and DALI-2 (IEC 62386) Commissioning Specialist for AI Agents. Provisions short addresses (0-63), resolves collisions, and configures DT8 lighting.",
+  "main": "SKILL.md",
   "keywords": [
     "agent-skills",
     "skills-sh",
@@ -11,15 +12,19 @@
     "windsurf",
     "dali",
     "dali-2",
-    "lighting",
-    "building-automation",
     "iec-62386",
-    "commissioning"
+    "lighting-control",
+    "building-automation",
+    "iot"
   ],
   "author": "Pavel Lebedev <pasha20051344@gmail.com> (https://wwew.tech)",
   "license": "MIT",
+  "homepage": "https://skills.sh/wwewtech/dali-short-address-commissioner",
   "repository": {
     "type": "git",
     "url": "https://github.com/wwewtech/dali-short-address-commissioner.git"
+  },
+  "bugs": {
+    "url": "https://github.com/wwewtech/dali-short-address-commissioner/issues"
   }
 }

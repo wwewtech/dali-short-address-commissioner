@@ -1,7 +1,13 @@
 {
-  "group": "DALI Lighting Commissioning",
-  "description": "Commission DALI/DALI-2 lighting buses: short-address assignment, clash resolution, groups, scenes, and emergency ballast tests per IEC 62386.",
-  "skills": [
-    "dali-short-address-commissioner"
+  "$schema": "https://skills.sh/schemas/skills.sh.schema.json",
+  "notGrouped": "bottom",
+  "groupings": [
+    {
+      "title": "Building Automation & IoT Protocol Engineering",
+      "description": "Deterministic commissioning, collision resolution, and parameter programming for DALI and DALI-2 (IEC 62386) lighting networks.",
+      "skills": [
+        "dali-short-address-commissioner"
+      ]
+    }
   ]
 }

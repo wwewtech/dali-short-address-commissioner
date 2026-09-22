@@ -1,27 +1,22 @@
 {
   "evals": [
     {
-      "prompt": "Commission a new DALI bus from scratch with 24 luminaires connected to a KNX/DALI gateway.",
-      "files": [],
       "id": 1,
-      "expected_output": "Agent runs pre-flight checks (bus power, no shorts, <64 devices), sends Initialize (cmd 258 twice within 100ms) then Randomize (259 twice), assigns short addresses 0-23 one by one verifying each with Identify, plans group assignments by room/function, programs at least one fallback scene at 100%, and reminds about the 15-minute commissioning timer.",
-      "name": "commission_new_bus"
+      "name": "double-command-timing-and-bounds",
+      "prompt": "I need a Python script to scan a new DALI bus and assign short addresses to all connected ballasts. There are about 50 light fixtures.",
+      "expected_output": "The agent specifies that configuration commands (INITIALISE, RANDOMISE, PROGRAM SHORT ADDRESS) must be transmitted twice within 100ms. It enforces short addresses strictly between 0 and 63, handles the 15-minute commissioning watchdog timer, issues WITHDRAW (cmd 266) to exclude addressed fixtures, and concludes with TERMINATE (cmd 257)."
     },
     {
-      "prompt": "After adding 4 new Tridonic LED drivers to an existing DALI bus, two luminaires now flicker and respond to the wrong commands. Diagnose and fix.",
-      "files": [],
       "id": 2,
-      "expected_output": "Agent suspects address clashes from factory-fresh gear, runs discovery to identify duplicate short addresses, moves conflicting gear to free addresses (never leaves duplicates), re-runs discovery to confirm zero clashes, and verifies each luminaire responds correctly to its assigned address.",
-      "name": "resolve_address_clash"
+      "name": "non-destructive-single-fixture-replacement",
+      "prompt": "One ballast broke on an existing office floor of 40 lights (address A14). Electricians replaced it with a factory-new driver. How do I commission the new driver without wiping out all existing group and scene programming?",
+      "expected_output": "The agent instructs to send INITIALISE (only gear without short address, 0xFF) twice within 100ms, explicitly avoiding global INITIALISE (0x00). It searches only for the unaddressed unit, assigns short address 14 directly, sends WITHDRAW, and terminates without altering the remaining 39 fixtures."
     },
     {
-      "prompt": "One ballast on short address 14 has died. I've installed a replacement. How do I get it working without disrupting the other 31 luminaires on the bus?",
-      "files": [],
       "id": 3,
-      "expected_output": "Agent follows the replacement flow: discover the new unassigned gear (address 255), assign it explicitly to short address 14 (do NOT randomize the whole bus), re-apply group and scene membership from the saved config, and verify the replacement responds correctly.",
-      "name": "replace_failed_ballast"
+      "name": "dt8-tunable-white-mirek-calculation",
+      "prompt": "How do I set a DALI DT8 luminaire at address A05 to 3000 Kelvin warm white using standard DALI-2 Part 209 commands?",
+      "expected_output": "The agent calculates mirek = 1,000,000 / 3000 = 333 (0x014D). It sets DTR0 to 0x4D and DTR1 to 0x01. It issues the double-command 0xE7 0x20 (SET TEMP COLOUR) within 100ms, and notes the difference between DT8 color control and legacy DT6 single-channel intensity."
     }
-  ],
-  "skill_name": "dali-short-address-commissioner",
-  "version": "1.0.0"
+  ]
 }

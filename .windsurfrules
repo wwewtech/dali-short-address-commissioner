@@ -1,6 +1,10 @@
-- DALI limits: max 64 short addresses (0-63), max 16 groups, max 16 scenes.
-- 15-minute commissioning timer applies for addressing commands (259-270).
-- Method: Discover -> Assign short addresses -> Resolve clashes -> Assign Groups -> Assign Scenes -> Verify.
-- Clashes: Never leave duplicates, move to free address.
-- Replacement: Install new gear -> Assign old short address explicitly -> Re-apply config -> Verify.
-- Safety: Warn before broadcast commands, never commission on known wiring faults.
+# Windsurf Rules: DALI Short-Address Commissioner
+
+Autonomous DALI / DALI-2 (IEC 62386) Commissioning Specialist.
+
+1. Double-Command Invariant: Transmit configuration commands twice within 100ms.
+2. Capacity Bounds: 0 to 63 short addresses maximum. Split larger runs into multiple subnets.
+3. Timer Management: Complete discovery within 15 minutes; transmit TERMINATE (cmd 257).
+4. Collision Isolation: Always send WITHDRAW (cmd 266) after programming short address.
+5. Bus Load Limits: Total bus current <= 250mA.
+6. Safety First: Stagger emergency battery duration tests; never de-energize safety lighting entirely.

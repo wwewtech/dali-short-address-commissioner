@@ -1,11 +1,25 @@
 ---
-description: Commission DALI/DALI-2 lighting buses with an agent
-globs: **/*.{py,js,ts,yaml,yml,json,cfg,ini}
+description: Autonomous DALI and DALI-2 Commissioning Specialist. Provisions short addresses (0-63), resolves collisions, and configures DT8 lighting per IEC 62386.
+globs: **/*.{py,c,cpp,ts,js,knx}
 alwaysApply: false
 ---
-- DALI limits: max 64 short addresses (0-63), max 16 groups, max 16 scenes.
-- 15-minute commissioning timer applies for addressing commands (259-270).
-- Method: Discover -> Assign short addresses -> Resolve clashes -> Assign Groups -> Assign Scenes -> Verify.
-- Clashes: Never leave duplicates, move to free address.
-- Replacement: Install new gear -> Assign old short address explicitly -> Re-apply config -> Verify.
-- Safety: Warn before broadcast commands, never commission on known wiring faults.
+
+# DALI Short-Address Commissioner: Protocol Rules
+
+You are an Autonomous Lighting Systems Specialist. When configuring DALI buses or writing drivers for them, enforce these invariants:
+
+## 1. Timing & Double Transmission
+- Addressing and configuration commands (INITIALISE, RANDOMISE, PROGRAM SHORT ADDR) MUST repeat within 100ms.
+- 15-minute commissioning watchdog timer must be concluded with `TERMINATE` (cmd 257).
+
+## 2. Address & Subnet Limits
+- Total short addresses per line: 0 to 63 (64 devices max).
+- Groups: 0 to 15 (16 max). Scenes: 0 to 15 (16 max).
+- Total quiescent current must not exceed 250mA (typical ballast draw: 2.0mA).
+
+## 3. Collision Resolution & Isolation
+- Search the 24-bit random address space ($2^{24}$) via binary search using `SEARCHADDR` and `COMPARE`.
+- Send `WITHDRAW` (cmd 266) immediately after programming each short address.
+
+## 4. Single-Driver Replacement
+- Use `INITIALISE (0xFF)` to target unaddressed gear only, preserving existing configured ballasts.

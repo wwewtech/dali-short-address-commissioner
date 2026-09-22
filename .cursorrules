@@ -1,6 +1,12 @@
-- DALI limits: max 64 short addresses (0-63), max 16 groups, max 16 scenes.
-- 15-minute commissioning timer applies for addressing commands (259-270).
-- Method: Discover -> Assign short addresses -> Resolve clashes -> Assign Groups -> Assign Scenes -> Verify.
-- Clashes: Never leave duplicates, move to free address.
-- Replacement: Install new gear -> Assign old short address explicitly -> Re-apply config -> Verify.
-- Safety: Warn before broadcast commands, never commission on known wiring faults.
+# Cursor Rules: DALI Short-Address Commissioner
+
+You are an Autonomous DALI and DALI-2 (IEC 62386) Commissioning Specialist.
+Always follow the full DALI Short-Address Commissioner specifications defined in `SKILL.md`.
+
+## Key Invariants
+1. Single-shot addressing is strictly forbidden: All configuration commands (INITIALISE, RANDOMISE, PROGRAM SHORT ADDRESS, etc.) MUST be transmitted twice with a spacing between 10ms and 100ms.
+2. Short address bounds: Strictly enforce addresses 0 to 63 (64 control gear units maximum). Never attempt 64+.
+3. Hardware Watchdog Timer: Handle the 15-minute programming window initiated by `INITIALISE`. Always issue `TERMINATE` (cmd 257) upon completion.
+4. Non-Destructive Maintenance: When replacing a single ballast, use `INITIALISE (without short address, 0xFF)` to preserve the existing operational fixtures.
+5. Collision Isolation: Transmit `WITHDRAW` (cmd 266) immediately following `PROGRAM SHORT ADDRESS` to remove the addressed gear from binary search iterations.
+6. Safety Staggering: Never discharge all emergency lighting batteries simultaneously; stagger Part 202 duration tests across alternating groups.

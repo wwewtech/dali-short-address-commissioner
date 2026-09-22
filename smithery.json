@@ -1,15 +1,23 @@
 {
   "name": "dali-short-address-commissioner",
-  "description": "Commission DALI/DALI-2 lighting buses with an agent: short-address assignment (0-63), clash resolution, 16 groups, 16 scenes, DT8 devices, and emergency ballast tests per IEC 62386.",
+  "displayName": "DALI Short-Address Commissioner",
+  "version": "1.0.0",
+  "description": "Commissions DALI and DALI-2 (IEC 62386) lighting buses: short-address assignment (0-63), 24-bit binary search collision resolution, DT8 color control, and emergency tests.",
+  "author": "wwewtech (Pavel Lebedev)",
+  "repository": "https://github.com/wwewtech/dali-short-address-commissioner",
+  "homepage": "https://skills.sh/wwewtech/dali-short-address-commissioner",
+  "license": "MIT",
   "tags": [
     "dali",
-    "lighting",
+    "dali-2",
+    "iec-62386",
+    "lighting-control",
     "building-automation",
-    "iot",
     "agent-skills",
     "claude-code",
-    "cursor",
-    "antigravity"
+    "cursor"
   ],
-  "author": "Pavel Lebedev"
+  "skill": {
+    "entrypoint": "SKILL.md"
+  }
 }

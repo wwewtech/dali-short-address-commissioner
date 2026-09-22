@@ -1,233 +1,567 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DALI Short-Address Commissioner Skill</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --bg-dark: #000000;
-            --bg-panel: #09090b;
-            --border-color: #27272a;
-            --text-main: #f4f4f5;
-            --text-muted: #a1a1aa;
-            --accent: #e4e4e7;
-        }
-        
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>dali-short-address-commissioner · IEC 62386 Bus Provisioning & Simulator</title>
+  <meta name="description" content="Commissions DALI and DALI-2 (IEC 62386) lighting buses: short-address assignment (0-63), 24-bit binary search collision resolution, DT8 color, and emergency tests.">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 32 32%22><rect width=%2232%22 height=%2232%22 rx=%226%22 fill=%22%23000%22/><circle cx=%2216%22 cy=%2216%22 r=%228%22 fill=%22none%22 stroke=%22%2310b981%22 stroke-width=%223%22/></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #000000;
+      --surface-1: #09090b;
+      --surface-2: #121215;
+      --surface-elevated: #18181c;
+      --border-subtle: rgba(255, 255, 255, 0.08);
+      --border-hover: rgba(255, 255, 255, 0.16);
+      --text: #f4f4f5;
+      --text-dim: #a1a1aa;
+      --text-muted: #52525b;
+      --accent-emerald: #10b981;
+      --accent-blue: #38bdf8;
+      --accent-amber: #f59e0b;
+      --accent-red: #ef4444;
+      --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      --font-mono: 'JetBrains Mono', Consolas, monospace;
+      --radius-sm: 6px;
+      --radius-md: 10px;
+      --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+    }
 
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: var(--bg-dark);
-            color: var(--text-main);
-            line-height: 1.6;
-            -webkit-font-smoothing: antialiased;
-        }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font-sans);
+      font-size: 14px;
+      line-height: 1.55;
+      -webkit-font-smoothing: antialiased;
+    }
 
-        code, pre {
-            font-family: 'JetBrains Mono', monospace;
-        }
+    /* Header */
+    header.site-header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      width: 100%;
+      background: rgba(0, 0, 0, 0.85);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--border-subtle);
+      height: 54px;
+      display: flex;
+      align-items: center;
+    }
+    .header-inner {
+      max-width: 1040px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 0 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      color: #fff;
+    }
+    .brand-icon {
+      width: 24px;
+      height: 24px;
+      border-radius: 5px;
+      background: #064e3b;
+      border: 1px solid rgba(16, 185, 129, 0.3);
+      display: grid;
+      place-items: center;
+      color: var(--accent-emerald);
+      font-weight: 700;
+      font-size: 12px;
+    }
+    .brand-title { font-weight: 600; font-size: 14px; letter-spacing: -0.01em; }
+    .nav-links { display: flex; gap: 16px; font-size: 13px; }
+    .nav-links a { color: var(--text-dim); text-decoration: none; transition: color 120ms; }
+    .nav-links a:hover { color: #fff; }
 
-        header {
-            position: sticky;
-            top: 0;
-            background: rgba(0, 0, 0, 0.8);
-            backdrop-filter: blur(8px);
-            border-bottom: 1px solid var(--border-color);
-            padding: 1rem 2rem;
-            z-index: 100;
-        }
+    /* Layout */
+    .container {
+      max-width: 1040px;
+      margin: 0 auto;
+      padding: 40px 20px 100px;
+    }
 
-        .container {
-            max-width: 1000px;
-            margin: 0 auto;
-            padding: 4rem 2rem;
-        }
+    /* Hero */
+    .hero {
+      padding: 40px 0 32px;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      padding: 3px 9px;
+      border-radius: 20px;
+      background: rgba(16, 185, 129, 0.1);
+      border: 1px solid rgba(16, 185, 129, 0.3);
+      color: #6ee7b7;
+      margin-bottom: 16px;
+    }
+    .hero h1 {
+      font-size: 32px;
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      line-height: 1.2;
+      margin-bottom: 12px;
+    }
+    .hero p {
+      font-size: 16px;
+      color: var(--text-dim);
+      max-width: 720px;
+      line-height: 1.6;
+      margin-bottom: 24px;
+    }
 
-        .hero {
-            margin-bottom: 4rem;
-        }
+    .install-bar {
+      display: flex;
+      align-items: center;
+      background: var(--surface-1);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-sm);
+      padding: 8px 14px;
+      max-width: 540px;
+      font-family: var(--font-mono);
+      font-size: 13px;
+    }
+    .install-bar code { flex: 1; color: #34d399; }
+    .copy-btn {
+      background: var(--surface-elevated);
+      border: 1px solid var(--border-subtle);
+      color: var(--text);
+      padding: 4px 10px;
+      border-radius: 4px;
+      font-size: 12px;
+      cursor: pointer;
+      transition: all 120ms var(--ease-out);
+    }
+    .copy-btn:hover { background: #27272a; border-color: var(--border-hover); }
+    .copy-btn:active { transform: scale(0.96); }
 
-        h1 {
-            font-size: 2.5rem;
-            font-weight: 600;
-            margin-bottom: 1rem;
-            letter-spacing: -0.02em;
-        }
+    .section-title {
+      font-size: 20px;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      margin: 48px 0 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .section-subtitle { color: var(--text-dim); font-size: 14px; margin-bottom: 24px; }
 
-        .subtitle {
-            color: var(--text-muted);
-            font-size: 1.125rem;
-            margin-bottom: 2rem;
-            max-width: 600px;
-        }
+    /* Interactive Bus Grid */
+    .bus-card {
+      background: var(--surface-1);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      margin-bottom: 40px;
+    }
+    .bus-header {
+      background: var(--surface-2);
+      padding: 14px 20px;
+      border-bottom: 1px solid var(--border-subtle);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .bus-title { font-family: var(--font-mono); font-size: 12px; font-weight: 600; color: var(--text-dim); }
+    .bus-actions { display: flex; gap: 8px; }
+    .action-btn {
+      background: var(--surface-elevated);
+      border: 1px solid var(--border-subtle);
+      color: #fff;
+      padding: 5px 12px;
+      border-radius: 4px;
+      font-size: 12px;
+      font-family: var(--font-mono);
+      cursor: pointer;
+      transition: all 120ms;
+    }
+    .action-btn:hover { background: #27272a; border-color: var(--border-hover); }
+    .action-btn.primary { background: #059669; border-color: #10b981; }
+    .action-btn.primary:hover { background: #047857; }
 
-        .install-box {
-            background: var(--bg-panel);
-            border: 1px solid var(--border-color);
-            padding: 1rem;
-            border-radius: 4px;
-            display: inline-flex;
-            align-items: center;
-            gap: 1rem;
-        }
+    .bus-body { padding: 24px; }
 
-        .install-box code {
-            color: var(--text-main);
-        }
+    /* Grid layout for 64 nodes */
+    .dali-grid {
+      display: grid;
+      grid-template-columns: repeat(8, 1fr);
+      gap: 8px;
+      margin-bottom: 24px;
+    }
+    .dali-node {
+      aspect-ratio: 1;
+      background: #000;
+      border: 1px solid var(--border-subtle);
+      border-radius: 4px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      transition: all 120ms;
+      user-select: none;
+    }
+    .dali-node:hover { border-color: var(--accent-emerald); transform: translateY(-1px); }
+    .dali-node.assigned { background: rgba(16, 185, 129, 0.15); border-color: var(--accent-emerald); color: #6ee7b7; }
+    .dali-node.active-search { background: rgba(56, 189, 248, 0.2); border-color: var(--accent-blue); color: #38bdf8; }
+    .dali-node.selected { outline: 2px solid #fff; }
 
-        .section {
-            margin-bottom: 4rem;
-            padding-top: 2rem;
-            border-top: 1px solid var(--border-color);
-        }
+    .node-num { font-weight: 700; }
+    .node-status { font-size: 9px; color: var(--text-muted); }
 
-        h2 {
-            font-size: 1.5rem;
-            font-weight: 500;
-            margin-bottom: 1.5rem;
-        }
+    /* Inspector & Calculators */
+    .split-tools {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+    @media (max-width: 768px) {
+      .split-tools { grid-template-columns: 1fr; }
+      .dali-grid { grid-template-columns: repeat(4, 1fr); }
+    }
 
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
-        }
+    .tool-panel {
+      background: var(--surface-2);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-sm);
+      padding: 16px;
+    }
+    .tool-panel h4 { font-size: 14px; font-weight: 600; margin-bottom: 12px; display: flex; align-items: center; gap: 6px; }
 
-        .card {
-            background: var(--bg-panel);
-            border: 1px solid var(--border-color);
-            padding: 1.5rem;
-            border-radius: 4px;
-        }
+    .stat-row { display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px solid var(--border-subtle); font-size: 12.5px; }
+    .stat-row:last-child { border-bottom: none; }
+    .stat-k { color: var(--text-dim); }
+    .stat-v { font-family: var(--font-mono); font-weight: 500; }
 
-        .card h3 {
-            font-size: 1.125rem;
-            font-weight: 500;
-            margin-bottom: 1rem;
-        }
+    /* Sliders */
+    .slider-row { margin: 12px 0; }
+    .slider-row label { display: flex; justify-content: space-between; font-size: 12px; color: var(--text-dim); margin-bottom: 6px; }
+    input[type=range] { width: 100%; accent-color: var(--accent-emerald); }
 
-        .workflow {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            flex-wrap: wrap;
-            margin-top: 1rem;
-        }
+    /* Luminaire preview */
+    .luminaire-box {
+      width: 100%;
+      height: 90px;
+      border-radius: 6px;
+      background: #000;
+      border: 1px solid var(--border-subtle);
+      display: grid;
+      place-items: center;
+      margin-top: 12px;
+      transition: box-shadow 150ms;
+    }
+    .light-bulb {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      transition: all 150ms;
+    }
 
-        .step {
-            background: var(--bg-dark);
-            border: 1px solid var(--border-color);
-            padding: 0.5rem 1rem;
-            border-radius: 4px;
-            font-size: 0.875rem;
-        }
+    /* Tables */
+    table.data-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+      margin-top: 16px;
+      border: 1px solid var(--border-subtle);
+    }
+    table.data-table th {
+      background: var(--surface-2);
+      text-align: left;
+      padding: 10px 14px;
+      font-weight: 600;
+      border-bottom: 1px solid var(--border-subtle);
+      color: var(--text-dim);
+    }
+    table.data-table td {
+      padding: 10px 14px;
+      border-bottom: 1px solid var(--border-subtle);
+      background: var(--surface-1);
+    }
 
-        .arrow {
-            color: var(--text-muted);
-        }
-        
-        .visualization {
-            background: var(--bg-dark);
-            border: 1px solid var(--border-color);
-            padding: 2rem;
-            margin-top: 2rem;
-            text-align: center;
-            font-family: 'JetBrains Mono', monospace;
-            color: var(--text-muted);
-        }
-
-        ul {
-            list-style-type: none;
-        }
-        
-        ul li {
-            position: relative;
-            padding-left: 1.5rem;
-            margin-bottom: 0.5rem;
-            color: var(--text-muted);
-        }
-        
-        ul li::before {
-            content: "—";
-            position: absolute;
-            left: 0;
-            color: var(--border-color);
-        }
-    </style>
+    footer {
+      border-top: 1px solid var(--border-subtle);
+      padding: 40px 0;
+      color: var(--text-muted);
+      font-size: 13px;
+      text-align: center;
+    }
+  </style>
 </head>
 <body>
-    <header>
-        <div>wwewtech / dali-short-address-commissioner</div>
-    </header>
 
-    <div class="container">
-        <div class="hero">
-            <h1>DALI Short-Address Commissioner</h1>
-            <p class="subtitle">Agent skill for systematic DALI/DALI-2 lighting bus commissioning per IEC 62386.</p>
-            <div class="install-box">
-                <code>npx skills add wwewtech/dali-short-address-commissioner</code>
-            </div>
-        </div>
-
-        <div class="section">
-            <h2>Commissioning Workflow</h2>
-            <div class="card">
-                <p>Methodical approach to prevent duplicate or missing addresses:</p>
-                <div class="workflow">
-                    <div class="step">Discover</div>
-                    <div class="arrow">→</div>
-                    <div class="step">Address</div>
-                    <div class="arrow">→</div>
-                    <div class="step">Group</div>
-                    <div class="arrow">→</div>
-                    <div class="step">Scene</div>
-                    <div class="arrow">→</div>
-                    <div class="step">Verify</div>
-                </div>
-            </div>
-        </div>
-
-        <div class="section">
-            <h2>Core Constraints</h2>
-            <div class="grid">
-                <div class="card">
-                    <h3>The 64 Limit</h3>
-                    <p>Maximum 64 short addresses (0-63) per bus. Beyond this, the bus must be split.</p>
-                    <div class="visualization">
-                        [00] [01] [02] ... [61] [62] [63]
-                    </div>
-                </div>
-                <div class="card">
-                    <h3>Groups & Scenes</h3>
-                    <ul>
-                        <li>Max 16 Groups</li>
-                        <li>Max 16 Scenes</li>
-                        <li>15-min commissioning timer</li>
-                        <li>DT8 color support</li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-
-        <div class="section">
-            <h2>Replacement Flow</h2>
-            <div class="card">
-                <h3>Failed Ballast Recovery</h3>
-                <ul>
-                    <li>Install new gear (shows as unassigned)</li>
-                    <li>Discover only new gear (do not randomize bus)</li>
-                    <li>Assign explicit OLD short address</li>
-                    <li>Re-apply group/scene from saved config</li>
-                    <li>Verify functionality</li>
-                </ul>
-            </div>
-        </div>
+  <header class="site-header">
+    <div class="header-inner">
+      <a href="#" class="brand">
+        <div class="brand-icon">&#x25C9;</div>
+        <span class="brand-title">dali-short-address-commissioner</span>
+      </a>
+      <nav class="nav-links">
+        <a href="#bus-sim">Bus Simulator</a>
+        <a href="#dt8">DT8 Tunable White</a>
+        <a href="#anti-patterns">10 Anti-Patterns</a>
+        <a href="https://github.com/wwewtech/dali-short-address-commissioner" target="_blank" rel="noopener">GitHub</a>
+      </nav>
     </div>
+  </header>
+
+  <div class="container">
+
+    <section class="hero">
+      <div class="badge">IEC 62386 PROTOCOL ENGINE · v1.0.0</div>
+      <h1>Commission DALI &amp; DALI-2 Buses Deterministically</h1>
+      <p>Simulate 24-bit binary search collision resolution, enforce double-command 100ms timing, allocate 64 short addresses (0–63), configure DT8 color coordinates, and calculate bus power budgets per IEC 62386.</p>
+
+      <div class="install-bar">
+        <code>npx skills add wwewtech/dali-short-address-commissioner</code>
+        <button class="copy-btn" onclick="navigator.clipboard.writeText('npx skills add wwewtech/dali-short-address-commissioner'); this.innerText='Copied!'; setTimeout(()=>this.innerText='Copy', 1500)">Copy</button>
+      </div>
+    </section>
+
+    <!-- INTERACTIVE BUS SIMULATOR -->
+    <h2 class="section-title" id="bus-sim">&#x26A1; 64-Node DALI Bus Addressing Simulator</h2>
+    <p class="section-subtitle">Click nodes to inspect gear parameters, or run the automated 24-bit binary search commissioning sequence.</p>
+
+    <div class="bus-card">
+      <div class="bus-header">
+        <span class="bus-title">DALI SUBNET 1 · CAPACITY: 64 SHORT ADDRESSES (0–63)</span>
+        <div class="bus-actions">
+          <button class="action-btn primary" id="btnCommission" onclick="startCommissioning()">Run 24-Bit Binary Search</button>
+          <button class="action-btn" onclick="resetBus()">Reset Bus</button>
+        </div>
+      </div>
+      <div class="bus-body">
+        <div class="dali-grid" id="daliGrid"></div>
+
+        <div class="split-tools">
+          <!-- Device Inspector -->
+          <div class="tool-panel">
+            <h4>&#x1F4CB; Selected Gear Telemetry</h4>
+            <div class="stat-row"><span class="stat-k">Short Address</span><span class="stat-v" id="nodeShortAddr">A04</span></div>
+            <div class="stat-row"><span class="stat-k">Long 24-bit Address</span><span class="stat-v" id="nodeLongAddr">0x8F4A21</span></div>
+            <div class="stat-row"><span class="stat-k">Device Type</span><span class="stat-v" id="nodeDevType">DT8 (Tunable White)</span></div>
+            <div class="stat-row"><span class="stat-k">Group Membership</span><span class="stat-v" id="nodeGroup">Group 0, Group 2</span></div>
+            <div class="stat-row"><span class="stat-k">Quiescent Draw</span><span class="stat-v" style="color: var(--accent-emerald);">2.0 mA</span></div>
+            <div class="stat-row"><span class="stat-k">Watchdog Timer</span><span class="stat-v" style="color: var(--accent-amber);" id="nodeWatchdog">14:52 remaining</span></div>
+          </div>
+
+          <!-- Bus Power & Current Budget -->
+          <div class="tool-panel">
+            <h4>&#x26A1; Bus Power &amp; Current Budget</h4>
+            <div class="slider-row">
+              <label><span>Connected Ballasts</span><span id="lblBallastCount">42 units</span></label>
+              <input type="range" id="rngBallasts" min="1" max="64" value="42" oninput="updatePowerBudget()">
+            </div>
+            <div class="stat-row"><span class="stat-k">Control Gear Current</span><span class="stat-v" id="valGearMa">84.0 mA</span></div>
+            <div class="stat-row"><span class="stat-k">Sensor / Coupler Current</span><span class="stat-v">20.0 mA</span></div>
+            <div class="stat-row"><span class="stat-k">Total Bus Current</span><span class="stat-v" id="valTotalMa" style="color: var(--accent-emerald);">104.0 mA</span></div>
+            <div class="stat-row"><span class="stat-k">PSU Limit (IEC 62386)</span><span class="stat-v">250.0 mA Max</span></div>
+            <div class="stat-row"><span class="stat-k">Bus Voltage</span><span class="stat-v">16.2V DC (Normal)</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- DT8 TUNABLE WHITE TOOL -->
+    <h2 class="section-title" id="dt8">&#x1F3A8; DT8 Tunable White &amp; Mirek Calculator</h2>
+    <p class="section-subtitle">DALI-2 Part 209 converts color temperature into 16-bit mirek registers across DTR0 and DTR1.</p>
+
+    <div class="bus-card">
+      <div class="bus-body">
+        <div class="split-tools">
+          <div>
+            <div class="slider-row">
+              <label><span>Color Temperature (Kelvin)</span><span id="lblKelvin">4000 K (Neutral White)</span></label>
+              <input type="range" id="rngKelvin" min="2700" max="6500" step="50" value="4000" oninput="updateKelvin()">
+            </div>
+            <div class="stat-row"><span class="stat-k">Calculated Mirek (1,000,000 / K)</span><span class="stat-v" id="valMirek">250</span></div>
+            <div class="stat-row"><span class="stat-k">DTR0 Register (Low Byte)</span><span class="stat-v" id="valDtr0">0xFA (250)</span></div>
+            <div class="stat-row"><span class="stat-k">DTR1 Register (High Byte)</span><span class="stat-v" id="valDtr1">0x00 (0)</span></div>
+            <div class="stat-row"><span class="stat-k">Command Payload</span><span class="stat-v" style="color: var(--accent-emerald);">0xE7 0x20 (SET TEMP COLOUR)</span></div>
+          </div>
+
+          <div style="display: flex; flex-direction: column; justify-content: center; align-items: center;">
+            <div class="luminaire-box" id="luminaireBox">
+              <div class="light-bulb" id="lightBulb"></div>
+            </div>
+            <span style="font-family: var(--font-mono); font-size: 11px; color: var(--text-dim); margin-top: 8px;">Real-Time IEC 62386-209 Color Output</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 10 ANTI-PATTERNS -->
+    <h2 class="section-title" id="anti-patterns">&#x1F6A8; 10 Banned DALI Commissioning Anti-Patterns</h2>
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>Anti-Pattern</th>
+          <th>Manifestation</th>
+          <th>Mandatory Production Counter-Rule</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Single-Shot Commands</strong></td>
+          <td>Sending cmd 258/267 only once</td>
+          <td>Configuration commands MUST be transmitted twice within 100ms.</td>
+        </tr>
+        <tr>
+          <td><strong>Exceeding 64 Short Addresses</strong></td>
+          <td>Addressing 65+ devices on one loop</td>
+          <td>Strictly enforce 0–63 address limits; split into subnets for larger installations.</td>
+        </tr>
+        <tr>
+          <td><strong>Timer Starvation</strong></td>
+          <td>Allowing 15-minute window to lapse</td>
+          <td>Issue keep-alive refresh or send <code>TERMINATE</code> immediately upon completion.</td>
+        </tr>
+        <tr>
+          <td><strong>Ghost Address Overwrite</strong></td>
+          <td>Blindly wiping addresses 0–63</td>
+          <td>Run non-destructive <code>QUERY STATUS</code> (cmd 144) before assigning.</td>
+        </tr>
+        <tr>
+          <td><strong>Missing WITHDRAW Command</strong></td>
+          <td>Skipping cmd 266 after addressing</td>
+          <td>Send <code>WITHDRAW</code> immediately to isolate addressed unit from binary search.</td>
+        </tr>
+        <tr>
+          <td><strong>Simultaneous Emergency Tests</strong></td>
+          <td>Testing all emergency lights at once</td>
+          <td>Stagger 3-hour battery discharge tests across odd/even groups.</td>
+        </tr>
+      </tbody>
+    </table>
+
+  </div>
+
+  <footer>
+    <div class="container" style="padding: 0;">
+      <p>dali-short-address-commissioner · MIT License · IEC 62386 Compliance · <a href="https://github.com/wwewtech/dali-short-address-commissioner" style="color: var(--text-dim);">wwewtech</a></p>
+    </div>
+  </footer>
+
+  <script>
+    // Grid Generation
+    const grid = document.getElementById('daliGrid');
+    const nodes = [];
+
+    for (let i = 0; i < 64; i++) {
+      const node = document.createElement('div');
+      node.className = 'dali-node' + (i < 42 ? ' assigned' : '');
+      node.innerHTML = `
+        <span class="node-num">A${i.toString().padStart(2, '0')}</span>
+        <span class="node-status">${i < 42 ? 'OK' : 'FREE'}</span>
+      `;
+      node.onclick = () => selectNode(i);
+      grid.appendChild(node);
+      nodes.push(node);
+    }
+
+    function selectNode(idx) {
+      nodes.forEach(n => n.classList.remove('selected'));
+      nodes[idx].classList.add('selected');
+      document.getElementById('nodeShortAddr').innerText = `A${idx.toString().padStart(2, '0')}`;
+      document.getElementById('nodeLongAddr').innerText = `0x${(1000000 + idx * 8191).toString(16).toUpperCase()}`;
+      document.getElementById('nodeGroup').innerText = `Group ${idx % 16}, Group ${(idx + 2) % 16}`;
+    }
+
+    function updatePowerBudget() {
+      const cnt = parseInt(document.getElementById('rngBallasts').value);
+      document.getElementById('lblBallastCount').innerText = `${cnt} units`;
+      const gearMa = (cnt * 2.0).toFixed(1);
+      const totalMa = (cnt * 2.0 + 20.0).toFixed(1);
+      document.getElementById('valGearMa').innerText = `${gearMa} mA`;
+      document.getElementById('valTotalMa').innerText = `${totalMa} mA`;
+    }
+
+    function updateKelvin() {
+      const k = parseInt(document.getElementById('rngKelvin').value);
+      let desc = 'Neutral White';
+      if (k < 3200) desc = 'Warm White';
+      else if (k > 5000) desc = 'Cool Daylight';
+      document.getElementById('lblKelvin').innerText = `${k} K (${desc})`;
+
+      const mirek = Math.round(1000000 / k);
+      document.getElementById('valMirek').innerText = mirek;
+      const dtr0 = mirek & 0xFF;
+      const dtr1 = (mirek >> 8) & 0xFF;
+      document.getElementById('valDtr0').innerText = `0x${dtr0.toString(16).toUpperCase().padStart(2,'0')} (${dtr0})`;
+      document.getElementById('valDtr1').innerText = `0x${dtr1.toString(16).toUpperCase().padStart(2,'0')} (${dtr1})`;
+
+      // Render bulb color
+      const t = (k - 2700) / (6500 - 2700);
+      const r = Math.round(255 - t * 40);
+      const g = Math.round(180 + t * 50);
+      const b = Math.round(120 + t * 135);
+      const color = `rgb(${r}, ${g}, ${b})`;
+      document.getElementById('lightBulb').style.backgroundColor = color;
+      document.getElementById('lightBulb').style.boxShadow = `0 0 24px ${color}`;
+      document.getElementById('luminaireBox').style.boxShadow = `inset 0 0 30px rgba(${r}, ${g}, ${b}, 0.2)`;
+    }
+
+    let commissioningTimer = null;
+    function startCommissioning() {
+      resetBus();
+      let step = 0;
+      document.getElementById('btnCommission').disabled = true;
+      document.getElementById('btnCommission').innerText = 'Searching 24-bit space...';
+
+      commissioningTimer = setInterval(() => {
+        if (step < 64) {
+          nodes[step].classList.add('active-search');
+          setTimeout(() => {
+            nodes[step].classList.remove('active-search');
+            nodes[step].classList.add('assigned');
+            nodes[step].querySelector('.node-status').innerText = 'OK';
+          }, 40);
+          step++;
+        } else {
+          clearInterval(commissioningTimer);
+          document.getElementById('btnCommission').disabled = false;
+          document.getElementById('btnCommission').innerText = 'Commissioning Complete (TERMINATED)';
+          setTimeout(() => {
+            document.getElementById('btnCommission').innerText = 'Run 24-Bit Binary Search';
+          }, 3000);
+        }
+      }, 50);
+    }
+
+    function resetBus() {
+      if (commissioningTimer) clearInterval(commissioningTimer);
+      nodes.forEach((n, idx) => {
+        n.className = 'dali-node';
+        n.querySelector('.node-status').innerText = 'FREE';
+      });
+      document.getElementById('btnCommission').disabled = false;
+      document.getElementById('btnCommission').innerText = 'Run 24-Bit Binary Search';
+    }
+
+    // Init
+    selectNode(4);
+    updateKelvin();
+  </script>
 </body>
 </html>
