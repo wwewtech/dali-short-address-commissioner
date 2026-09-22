@@ -1,6 +1,6 @@
 ---
 name: dali-short-address-commissioner
-description: "Commissions DALI and DALI-2 (IEC 62386) lighting buses: short-address assignment (0-63), 24-bit binary search collision resolution, 16 groups, 16 scenes, DT8 color control, and emergency ballast testing. Trigger phrases: commission dali, dali short address, dali collision resolution, dali bus addressing, dali-2 setup."
+description: "Commissions DALI and DALI-2 (IEC 62386) lighting buses: short-address assignment (0-63), 24-bit binary search collision resolution, groups, and DT8 color control. Trigger phrases: commission dali, dali short address, dali collision resolution, dali bus addressing, dali-2 setup."
 category: architecture
 risk: safe
 source: community
