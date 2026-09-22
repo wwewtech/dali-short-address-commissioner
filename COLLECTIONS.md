@@ -22,12 +22,12 @@ This registry catalogs **`dali-short-address-commissioner`** across every AI age
 
 | Repository | Focus / Category | Status |
 | :--- | :--- | :--- |
-| **sickn33/agentic-awesome-skills** (46,500+ ⭐) | AAS Core / `skills/dali-short-address-commissioner/SKILL.md` | Prepared / Active |
-| **ComposioHQ/awesome-claude-skills** (75,000+ ⭐) | `IoT, Hardware & Building Automation` | Prepared / Active |
-| **heilcheng/awesome-agent-skills** (6,200+ ⭐) | `IoT & Embedded Systems` | Prepared / Active |
-| **VoltAgent/awesome-agent-skills** (34,500+ ⭐) | `Community Skills -> Hardware & IoT` | Prepared / Active |
-| **PatrickJS/awesome-cursorrules** (10,000+ ⭐) | `Embedded / IoT / DALI` (`rules/dali-short-address-commissioner.mdc`) | Prepared / Active |
-| **BehiSecc/awesome-claude-skills** (10,000+ ⭐) | `Hardware & IoT Automation` | Prepared / Active |
+| **sickn33/agentic-awesome-skills** (46,500+ ⭐) | AAS Core / `skills/dali-short-address-commissioner/SKILL.md` | [PR #1559](https://github.com/sickn33/agentic-awesome-skills/pull/1559) |
+| **ComposioHQ/awesome-claude-skills** (75,000+ ⭐) | `IoT, Hardware & Building Automation` | [PR #1959](https://github.com/ComposioHQ/awesome-claude-skills/pull/1959) |
+| **heilcheng/awesome-agent-skills** (6,200+ ⭐) | `IoT & Embedded Systems` | [PR #514](https://github.com/heilcheng/awesome-agent-skills/pull/514) |
+| **VoltAgent/awesome-agent-skills** (34,500+ ⭐) | `Community Skills -> Hardware & IoT` | [PR #1089](https://github.com/VoltAgent/awesome-agent-skills/pull/1089) |
+| **PatrickJS/awesome-cursorrules** (10,000+ ⭐) | `Embedded / IoT / DALI` (`rules/dali-short-address-commissioner.mdc`) | [PR #388](https://github.com/PatrickJS/awesome-cursorrules/pull/388) |
+| **BehiSecc/awesome-claude-skills** (10,000+ ⭐) | `Hardware & IoT Automation` | [PR #744](https://github.com/BehiSecc/awesome-claude-skills/pull/744) |
 | **rohitg00/awesome-claude-code-toolkit** (2,300+ ⭐) | `Skills -> Hardware & IoT` | Prepared / Active |
 | **Prat011/awesome-llm-skills** (1,700+ ⭐) | `Hardware & Embedded Protocols` | Prepared / Active |
 | **libukai/awesome-agent-skills** (5,100+ ⭐) | `精选技能 -> 物联网与智能建筑 (IoT & Smart Building)` | Prepared / Active |
