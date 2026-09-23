@@ -28,14 +28,12 @@ This registry catalogs **`dali-short-address-commissioner`** across every AI age
 | **VoltAgent/awesome-agent-skills** (34,500+ ⭐) | `Community Skills -> Hardware & IoT` | [PR #1089](https://github.com/VoltAgent/awesome-agent-skills/pull/1089) |
 | **PatrickJS/awesome-cursorrules** (10,000+ ⭐) | `Embedded / IoT / DALI` (`rules/dali-short-address-commissioner.mdc`) | [PR #388](https://github.com/PatrickJS/awesome-cursorrules/pull/388) |
 | **BehiSecc/awesome-claude-skills** (10,000+ ⭐) | `Hardware & IoT Automation` | [PR #744](https://github.com/BehiSecc/awesome-claude-skills/pull/744) |
-| **rohitg00/awesome-claude-code-toolkit** (2,300+ ⭐) | `Skills -> Hardware & IoT` | Prepared / Active |
-| **Prat011/awesome-llm-skills** (1,700+ ⭐) | `Hardware & Embedded Protocols` | Prepared / Active |
-| **libukai/awesome-agent-skills** (5,100+ ⭐) | `精选技能 -> 物联网与智能建筑 (IoT & Smart Building)` | Prepared / Active |
-| **skillmatic-ai/awesome-agent-skills** (670+ ⭐) | `Popular Collections / Hardware & IoT` | Prepared / Active |
-| **philipbankier/awesome-agent-skills** | `Domain-Specific -> Industrial Automation` | Prepared / Active |
-| **karanb192/awesome-claude-skills** | `Hardware & Automation` | Prepared / Active |
-| **spencerpauly/awesome-cursor-skills** | `Embedded & IoT Rules` | Prepared / Active |
-| **jqueryscript/awesome-claude-code** (510+ ⭐) | `Agent Skills -> Automation` | Prepared / Active |
+| **rohitg00/awesome-claude-code-toolkit** (2,300+ ⭐) | `Skills -> IoT & Hardware` | [PR #805](https://github.com/rohitg00/awesome-claude-code-toolkit/pull/805) |
+| **Prat011/awesome-llm-skills** (1,700+ ⭐) | `Security & Systems` | [PR #259](https://github.com/Prat011/awesome-llm-skills/pull/259) |
+| **libukai/awesome-agent-skills** (5,100+ ⭐) | `精选技能 -> 产品使用` | [PR #166](https://github.com/libukai/awesome-agent-skills/pull/166) |
+| **skillmatic-ai/awesome-agent-skills** (670+ ⭐) | `Popular Collections` | [PR #183](https://github.com/skillmatic-ai/awesome-agent-skills/pull/183) |
+| **spencerpauly/awesome-cursor-skills** | `Utilities` | [PR #86](https://github.com/spencerpauly/awesome-cursor-skills/pull/86) |
+| **jqueryscript/awesome-claude-code** (510+ ⭐) | `Agent Skills` | [PR #690](https://github.com/jqueryscript/awesome-claude-code/pull/690) |
 | **awesome-home-assistant** | `Home Assistant / DALI Lighting integrations` | Target Catalog |
 | **awesome-iot** | `Industrial IoT & Building Automation protocols` | Target Catalog |
 | **awesome-knx** | `KNX & DALI Lighting gateways` | Target Catalog |
