@@ -3,7 +3,7 @@
   "displayName": "DALI Short-Address Commissioner",
   "version": "1.0.0",
   "description": "Commissions DALI and DALI-2 (IEC 62386) lighting buses: short-address assignment (0-63), 24-bit binary search collision resolution, DT8 color control, and emergency tests.",
-  "author": "wwewtech (Pavel Lebedev)",
+  "author": "wwew.tech",
   "repository": "https://github.com/wwewtech/dali-short-address-commissioner",
   "homepage": "https://skills.sh/wwewtech/dali-short-address-commissioner",
   "license": "MIT",
