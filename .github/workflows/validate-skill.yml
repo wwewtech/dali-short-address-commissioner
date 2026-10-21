@@ -17,32 +17,33 @@ jobs:
         with:
           python-version: '3.11'
 
-      - name: Validate SKILL.md Frontmatter & Symmetry
+      - name: Validate SKILL.md Frontmatter
         run: |
           python -c "
-          import re, hashlib, sys
+          import re, os, sys
 
-          with open('SKILL.md', 'r', encoding='utf-8') as f:
+          SKILL_DIR = 'skills/dali-short-address-commissioner'
+          SKILL_MD = os.path.join(SKILL_DIR, 'SKILL.md')
+
+          assert os.path.isfile(SKILL_MD), f'Missing canonical skill file: {SKILL_MD}'
+          assert not os.path.isfile('SKILL.md'), 'Root SKILL.md must not exist: it shadows skills/ during skills CLI discovery'
+
+          with open(SKILL_MD, 'r', encoding='utf-8') as f:
               content = f.read()
 
-          # 1. Frontmatter check
           assert content.startswith('---'), 'SKILL.md must start with YAML frontmatter'
           match = re.match(r'^---\s*\n(.*?)\n---', content, re.DOTALL)
           assert match, 'Failed to parse YAML frontmatter'
           fm = match.group(1)
 
-          # 2. Required fields
           assert re.search(r'^name:\s*\S+', fm, re.M), 'Missing name in frontmatter'
           assert re.search(r'^description:\s*\S+', fm, re.M), 'Missing description in frontmatter'
 
-          # 3. Symmetry check
-          h1 = hashlib.sha256(open('SKILL.md', 'rb').read()).hexdigest()
-          h2 = hashlib.sha256(open('skills/dali-short-address-commissioner/SKILL.md', 'rb').read()).hexdigest()
-          assert h1 == h2, f'Symmetry check failed! Root hash {h1} != skills hash {h2}'
+          name = re.search(r'^name:\s*[\"\x27]?([^\"\x27\n]+)', fm, re.M).group(1).strip()
+          assert name == 'dali-short-address-commissioner', f'name mismatch: {name} != dali-short-address-commissioner'
 
-          print('✓ YAML Frontmatter is valid!')
-          print('✓ SHA256 symmetry check passed!')
-          print('✓ SKILL.md passed all validation checks!')
+          print('YAML frontmatter is valid')
+          print(f'Canonical skill file present: {SKILL_MD}')
           "
 
       - name: Run evals (schema + case integrity)
@@ -60,7 +61,7 @@ jobs:
           for i, e in enumerate(evals):
               assert isinstance(e, dict), 'eval case must be an object'
               for field in ('id', 'name', 'prompt', 'expected_output'):
-                  assert field in e and str(e[field]).strip(), 'eval case missing/empty field'
+                  assert field in e and str(e[field]).strip(), f'eval case missing/empty field {field}'
               assert len(str(e['prompt']).strip()) >= 20, 'eval prompt too short to be a real case'
               assert len(str(e['expected_output']).strip()) >= 20, 'eval expected_output too short to be real'
               assert e['id'] not in seen_ids, 'duplicate eval id'
@@ -68,5 +69,5 @@ jobs:
               seen_ids.add(e['id'])
               seen_names.add(e['name'])
 
-          print('evals.json: all cases passed schema + integrity checks!')
+          print('evals.json: all cases passed schema + integrity checks')
           "
